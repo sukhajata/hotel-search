@@ -14,7 +14,7 @@ import MapComponent from './MapComponent';
 
 import { addHotel, getTambons, getRoomTypes, addRoomType } from '../services/api';
 
-//import Keys from '../config/keys';
+import keys from '../config/keys';
 
 
 const styles = theme => ({
@@ -135,7 +135,7 @@ class AddHotel extends React.Component {
   render() {
     const { classes } = this.props;
     const { nameEnglish, nameThai, addressEnglish, addressThai, phone, lat, lng, tambons, roomTypes } = this.state;
-    const mapUrl = "https://maps.googleapis.com/maps/api/js?key=" + process.env.GOOGLE_MAPS_API_KEY + "&v=3.exp&libraries=geometry,drawing,places";
+    const mapUrl = "https://maps.googleapis.com/maps/api/js?key=" + keys.GOOGLE_MAPS_API_KEY + "&v=3.exp&libraries=geometry,drawing,places";
 
     return (
       <React.Fragment>
