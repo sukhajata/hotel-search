@@ -1,26 +1,60 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import ContentWithNavBar from './components/ContentWithNavBar';
+import AddHotel from './components/AddHotel';
+import ListHotels from './components/ListHotels';
+import EditHotel from './components/EditHotel';
+import SearchPage from './components/SearchPage';
+import SearchResults from './components/SearchResults';
+
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+        <BrowserRouter>
+          <Switch>
+              <Route
+                exact path="/"
+                render={ props => 
+                  <SearchPage {...props} />
+                }
+              />
+              <Route 
+                path="/list-hotels/"
+                render={ props => 
+                  <ContentWithNavBar {...props}>
+                    <ListHotels {...props} />
+                  </ContentWithNavBar>
+                }
+              />
+              <Route
+                path="/add-hotel/"
+                render={ props => 
+                  <ContentWithNavBar {...props}>
+                    <AddHotel {...props} />
+                  </ContentWithNavBar>
+                }
+              />
+              <Route
+                path="/edit-hotel/:id"
+                render={ props => 
+                  <ContentWithNavBar {...props} >
+                    <EditHotel {...props}/>
+                  </ContentWithNavBar>
+                }
+              />
+              <Route
+                path="/search-results"
+                render={ props => 
+                  <ContentWithNavBar {...props}>
+                    <SearchResults {...props}/>
+                  </ContentWithNavBar>
+                }
+              />
+          </Switch>
+        </BrowserRouter>
     );
   }
 }
