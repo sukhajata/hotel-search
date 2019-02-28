@@ -4,13 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
-import { Link } from "react-router-dom";
-
-import { getHotels } from '../services/api';
+import { search } from '../services/api';
 
 const styles = {
   root: {
@@ -18,7 +16,8 @@ const styles = {
     overflowX: 'auto',
   },
   table: {
-    minWidth: 700,
+    minWidth: 400,
+    backgroundColor: '#d3d3d3',
   },
 };
 
@@ -30,10 +29,16 @@ class SearchResults extends React.Component {
   }
 
   async componentDidMount() {
-    const hotels = await getHotels();
+    const { arrive, depart } = this.props.match.params;
+    const hotels = await search(arrive, depart);
     this.setState({
       hotels
     });
+  }
+
+  handleClick = id => {
+    const { arrive, depart } = this.props.match.params;
+    this.props.history.push('/confirm/' + arrive + '/' + depart + "/" + id + "/");
   }
 
   render() {
@@ -42,30 +47,26 @@ class SearchResults extends React.Component {
   
   return (
     <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name / ชื่อ</TableCell>
-            <TableCell >Address / ที่อยู่</TableCell>
-            <TableCell >Phone / โทรศัพท์</TableCell>
-            <TableCell >Tambon / ตำบล</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {hotels.map(n => (
-            <TableRow key={n.id}>
-              <TableCell component="th" scope="row">
-                <Link to={'/edit-hotel/' + n.id}  >
-                {n.name_english + " / " + n.name_thai}
-                </Link>
-              </TableCell>
-              <TableCell >{n.address_english + " / " + n.address_thai}</TableCell>
-              <TableCell >{n.phone}</TableCell>
-              <TableCell >{n.tambon_english + " / " + n.tambon_thai}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+        {hotels.map(h => (
+            <div key={h.hotel_id}>
+                <Typography variant="h6" style={{ padding: 15 }}>
+                    {h.hotel_name_english + " / " + h.hotel_name_thai}
+                </Typography>
+                <Table className={classes.table}>
+                    <TableBody>
+                    {h.rooms.map(n => (
+                         <TableRow key={n.room_id}>
+                            <TableCell component="th" scope="row" onClick={() => this.handleClick(n.room_id)}> 
+                                {n.room_type_english + " / " + n.room_type_thai}
+                            </TableCell>
+                            <TableCell align="right">{n.price}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+           </div>
+        ))}
+     
     </Paper>
   );
 }

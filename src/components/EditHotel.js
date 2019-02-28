@@ -9,6 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
 
 import { updateHotel, updateRoom, getTambons, getHotel, getHotelRooms } from '../services/api';
 
@@ -55,7 +56,7 @@ class EditHotel extends React.Component {
     const tambons = await getTambons();
     const hotels = await getHotel(this.props.match.params.id);
     const hotelRooms = await getHotelRooms(this.props.match.params.id);
-
+    
     if (tambons && hotels && hotelRooms) {
         const hotel = hotels[0];
         this.setState({
@@ -78,10 +79,23 @@ class EditHotel extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  handleRoomTypeChange = id => event => {
+  handleRoomCountChange = id => event => {
     let hotelRooms = this.state.hotelRooms.map(item => {
       if (item.id === id) {
         item.count = event.target.value;
+      }
+      return item;
+    });
+    
+    this.setState({
+      hotelRooms
+    });
+  }
+
+  handleRoomPriceChange = id => event => {
+    let hotelRooms = this.state.hotelRooms.map(item => {
+      if (item.id === id) {
+        item.price = event.target.value;
       }
       return item;
     });
@@ -107,7 +121,8 @@ class EditHotel extends React.Component {
       this.state.hotelRooms.forEach(async item => {
         const roomData = {
             id: item.id,
-            room_count: item.count
+            room_count: item.count,
+            price: item.price
         };
         await updateRoom(roomData);
       })
@@ -236,28 +251,41 @@ class EditHotel extends React.Component {
             </Select>
           </FormControl>
           
-          {hotelRooms.map(roomType => {
-                return (
-                    <TextField
-                        key={roomType.id}
-                        id={"r" + roomType.id}
-                        label={roomType.name_english + " / " + roomType.name_thai}
-                        style={{ margin: 8 }}
-                        value={roomType.count}
-                        margin="normal"
-                        type="number"
-                        variant="outlined"
-                        onChange={this.handleRoomTypeChange(roomType.id)}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                )
-          })}
+          {hotelRooms.map(roomType => (
+            <div key={roomType.id}>
+              <Typography variant="body1">
+                {roomType.name_english + " / " + roomType.name_thai}
+              </Typography>
+              <TextField
+                label="count / จำนวน"
+                style={{ margin: 8 }}
+                margin="normal"
+                type="number"
+                variant="outlined"
+                value={roomType.count}
+                onChange={this.handleRoomCountChange(roomType.id)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                label="price / ราคา"
+                style={{ margin: 8 }}
+                margin="normal"
+                type="number"
+                variant="outlined"
+                value={roomType.price}
+                onChange={this.handleRoomPriceChange(roomType.id)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
+          ))}
 
           <Button 
             onClick={this.onFormSubmit}
-            variant="outlined"
+            variant="contained"
             color="primary"
             style={{ margin: 8 }}
           >

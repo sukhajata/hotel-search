@@ -80,10 +80,21 @@ export default {
       margin: 'auto',
       padding: 50,
     },
+    hotelButton: {
+      backgroundColor: theme.palette.secondary.main,
+    },
     dateField: {
       marginLeft: theme.spacing.unit,
       marginRight: theme.spacing.unit,
       marginBottom: theme.spacing.unit * 2,
+    },
+    confirm: {
+      padding: 20,
+      textAlign: 'center'
+    },
+    credit: {
+      margin: 30,
+      maxWidth: 400
     },
     inputRoot: {
       color: 'inherit',

@@ -9,6 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
 
 import MapComponent from './MapComponent';
 
@@ -64,6 +65,7 @@ class AddHotel extends React.Component {
       roomNumbers.push({
         id: type.id,
         count: 0,
+        price: 0,
       })
     })
 
@@ -79,10 +81,23 @@ class AddHotel extends React.Component {
     this.setState({ [name]: event.target.value });
   };
 
-  handleRoomTypeChange = id => event => {
+  handleRoomCountChange = id => event => {
     let roomNumbers = this.state.roomNumbers.map(item => {
       if (item.id === id) {
         item.count = event.target.value;
+      }
+      return item;
+    });
+    
+    this.setState({
+      roomNumbers
+    });
+  }
+
+  handleRoomPriceChange = id => event => {
+    let roomNumbers = this.state.roomNumbers.map(item => {
+      if (item.id === id) {
+        item.price = event.target.value;
       }
       return item;
     });
@@ -110,7 +125,8 @@ class AddHotel extends React.Component {
         const roomData = {
           hotel_id: result.id,
           room_type_id: item.id,
-          room_count: item.count
+          room_count: item.count,
+          price: item.price,
         };
         await addRoomType(roomData);
       })
@@ -248,20 +264,35 @@ class AddHotel extends React.Component {
           </FormControl>
           
           {roomTypes.map(roomType => (
-            <TextField
-              key={roomType.id}
-              id={"r" + roomType.id}
-              label={roomType.name_english + " / " + roomType.name_thai}
-              style={{ margin: 8 }}
-              margin="normal"
-              type="number"
-              variant="outlined"
-              value={roomType.count}
-              onChange={this.handleRoomTypeChange(roomType.id)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+            <div key={roomType.id}>
+              <Typography variant="body1">
+                {roomType.name_english + " / " + roomType.name_thai}
+              </Typography>
+              <TextField
+                label="count / จำนวน"
+                style={{ margin: 8 }}
+                margin="normal"
+                type="number"
+                variant="outlined"
+                value={roomType.count}
+                onChange={this.handleRoomCountChange(roomType.id)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                label="price / ราคา"
+                style={{ margin: 8 }}
+                margin="normal"
+                type="number"
+                variant="outlined"
+                value={roomType.count}
+                onChange={this.handleRoomPriceChange(roomType.id)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </div>
           ))}
            
 

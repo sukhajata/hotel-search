@@ -5,6 +5,7 @@ import ListHotels from './components/ListHotels';
 import EditHotel from './components/EditHotel';
 import SearchPage from './components/SearchPage';
 import SearchResults from './components/SearchResults';
+import Confirm from './components/Confirm';
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
@@ -46,10 +47,18 @@ class App extends Component {
                 }
               />
               <Route
-                path="/search-results"
-                render={ props => 
+                path="/search-results/:arrive/:depart"
+                render={ props =>
                   <ContentWithNavBar {...props}>
                     <SearchResults {...props}/>
+                  </ContentWithNavBar>  
+                }
+              />
+              <Route
+                path="/confirm/:arrive/:depart/:id"
+                render={ props => 
+                  <ContentWithNavBar {...props}>
+                    <Confirm {...props}/>
                   </ContentWithNavBar>
                 }
               />

@@ -23,10 +23,11 @@ class SearchPage extends React.Component {
 
     render() {
         const { classes } = this.props;
+        const { arrive, depart } = this.state;
 
         const SubmitButton = withRouter(({ history }) => (
             <Button
-              onClick={() => { history.push('/search-results') }}
+              onClick={() => { history.push('/search-results/' + arrive + '/' + depart + '/') }}
               variant="contained"
               color="primary"
             >

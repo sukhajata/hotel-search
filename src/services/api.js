@@ -15,12 +15,22 @@ export async function getTambons() {
 }
 
 export async function getRoomTypes() {
-    const result = get("https://sukhajata.com/h/room/select.php");
+    const result = await get("https://sukhajata.com/h/room/select.php");
     return result;
 }
 
 export async function getHotelRooms(id) {
-    const result = get("https://sukhajata.com/h/hotel/rooms.php?id=" + id.toString());
+    const result = await get("https://sukhajata.com/h/hotel/rooms.php?id=" + id.toString());
+    return result;
+}
+
+export async function search(arrive, depart) {
+    const result = await get("https://sukhajata.com/h/hotel/search.php?arrive=" + arrive + "&depart=" + depart);
+    return result;
+}
+
+export async function getRoom(id) {
+    const result = await get("https://sukhajata.com/h/hotel/room.php?id=" + id.toString());
     return result;
 }
 
