@@ -69,7 +69,7 @@ class HotelDetails extends React.Component {
         const { classes } = this.props;
         const { hotel, rooms, hotelPhotos, popperOpen, lightboxImages, distance } = this.state;
         const mapUrl = "https://maps.googleapis.com/maps/api/js?key=" + keys.GOOGLE_MAPS_API_KEY + "&v=3.exp&libraries=geometry,drawing,places";
-
+        
         return (
             <div className={classes.content} >
                 <Lightbox 
@@ -93,6 +93,8 @@ class HotelDetails extends React.Component {
                         </GridListTile>
                     </GridList>
                 }
+                {hotel.latitude &&
+                <div>
                     <div style={{ margin: 10 }}>
                         <Typography variant="h5">
                             {hotel.name_english}
@@ -104,7 +106,7 @@ class HotelDetails extends React.Component {
                             {distance}km from Khemmarat
                         </Typography>
                     </div>
-                    {hotel.latitude &&
+                    
                     <MapComponent
                         googleMapURL={mapUrl}
                         loadingElement={<div style={{ height: `100%` }} />}
@@ -113,7 +115,7 @@ class HotelDetails extends React.Component {
                         onPlaceFound={this.onPlaceFound}
                         start={{latitude: hotel.latitude, longitude: hotel.longitude}}
                         />
-                    }
+                    
                     <div style={{margin: 10}}>
                         <Typography variant="h6">
                             {hotel.address_english + " " + hotel.tambon_english}
@@ -122,18 +124,18 @@ class HotelDetails extends React.Component {
                             {hotel.address_thai + " " + hotel.tambon_thai}
                         </Typography>
                     </div>
-
+                    </div>
+                }
                 </div>
                 <div style={{backgroundColor: '#f2f2f2', paddingTop: 5}}>
                 {rooms.map(n => 
-                <Paper style={{ margin: 15 }} key={n.id} onClick={this.popup}>
-                    <Grid container direction='row' spacing={8} onClick={() => this.handleClick(n.room_id)}>
-                        <Grid item>
-                        {n.images.length > 0 &&
-                            <React.Fragment>
+                    <Paper style={{ margin: 15 }} key={n.id} >
+                        <Grid container direction='column' spacing={8} onClick={() => this.handleClick(n.room_id)}>
+                            <Grid item>
+                            {n.images.length > 0 &&
                                 <div style={{position: 'relative'}} onClick={() => this.handleModalOpen(n.images)}>
-                                    <img key={n.images[0].image_name} style={{height:200, width: 200 }}
-                                        src={"https://sukhajata.com/h/img/small/" + n.images[0].image_name}
+                                    <img key={n.images[0].image_name} style={{ width: '100%' }}
+                                        src={"https://sukhajata.com/h/img/full/" + n.images[0].image_name}
                                         alt="Nice to see everyone"
                                     />
                                     <Launch 
@@ -141,31 +143,29 @@ class HotelDetails extends React.Component {
                                         onClick={() => this.handleModalOpen(n.images)}
                                     />
                                 </div>
+                            }
+                            </Grid>
 
-                            </React.Fragment>
-                        }
+                            <Grid item style={{padding: 15}}>
+                                <Typography variant="body1" >
+                                    {n.name_english}
+                                </Typography>
+                                <Typography variant="body1" style={{paddingBottom: 15}}>
+                                    {n.name_thai}
+                                </Typography>
+                                <Typography variant="h6" style={{ paddingBottom: 15}}>
+                                    {n.price}฿
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => this.selectRoom(n.id)}
+                                >
+                                    Select / เลือก
+                                </Button>
+                            </Grid>
                         </Grid>
-
-                        <Grid item>
-                            <Typography variant="body1" style={{ paddingTop: 15, paddingLeft: 15 }}>
-                                {n.name_english}
-                            </Typography>
-                            <Typography variant="body1" style={{ paddingLeft: 15 }}>
-                                {n.name_thai}
-                            </Typography>
-                            <Typography variant="body1" style={{ padding: 15 }}>
-                                {n.price}฿
-                            </Typography>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => this.selectRoom(n.id)}
-                            >
-                                Select / เลือก
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Paper>
+                    </Paper>
                 )}
                 </div>
             </div>      

@@ -96,7 +96,6 @@ export async function updateRoom(data) {
 
 async function post(url, data) {
     try {
-        console.log(data);
         const searchParams = Object.keys(data).map((key) => {
             return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
           }).join('&');

@@ -8,15 +8,11 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { search } from '../services/api';
+import { getDistance } from '../services/utils';
 
 const styles = {
   block: {
-    width: '95%',
-    margin: 10,
-  },
-  table: {
-    minWidth: 400,
-    backgroundColor: '#d3d3d3',
+    margin: 15,
   },
 };
 
@@ -30,7 +26,6 @@ class SearchResults extends React.Component {
   async componentDidMount() {
     const { arrive, depart } = this.props.match.params;
     const hotels = await search(arrive, depart);
-    
     this.setState({
       hotels
     });
@@ -46,14 +41,14 @@ class SearchResults extends React.Component {
     const { hotels } = this.state;
     
     return (
-        <React.Fragment>
+        <div style={{backgroundColor: '#f2f2f2'}}>
           {hotels.map(h => (
             <Paper key={h.hotel_id} className={classes.block} onClick={() => this.handleClick(h.hotel_id)}>
-              <Grid container  spacing={8}>
+              <Grid container direction="column"  spacing={8}>
                 {h.image_name && 
                 <Grid item>
-                  <img style={{height:200, width: 200 }}
-                    src={"https://sukhajata.com/h/img/small/" + h.image_name}
+                  <img style={{width: '100%'}}
+                    src={"https://sukhajata.com/h/img/wide/" + h.image_name}
                     alt="Nice to see everyone"
                   />
                 </Grid>
@@ -65,7 +60,10 @@ class SearchResults extends React.Component {
                   <Typography variant="body2" style={{ paddingLeft: 15 }}>
                     {h.hotel_name_thai}
                   </Typography>
-                  <Typography variant="body2" style={{ padding: 15 }}>
+                  <Typography variant="body2" style={{paddingLeft: 15}}>
+                    {getDistance(parseFloat(h.latitude), parseFloat(h.longitude))}km from Khemmarat
+                  </Typography>
+                  <Typography variant="h6" style={{ padding: 15 }}>
                     {h.min_price}฿
                   </Typography>
                 </Grid>
@@ -73,7 +71,7 @@ class SearchResults extends React.Component {
               </Grid>
             </Paper>       
           ))}
-      </React.Fragment>
+      </div>
       
     );
   }
