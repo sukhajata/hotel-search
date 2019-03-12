@@ -62,3 +62,25 @@ export function formatExpirationDate(value) {
 export function formatFormData(data) {
   return Object.keys(data).map(d => `${d}: ${data[d]}`);
 }
+
+function degreesToRadians(degrees) {
+  return degrees * Math.PI / 180;
+}
+
+export function getDistance(lat2, lon2) {
+  let lat1 = 16.042198;
+  const lon1 = 105.223616;
+  const earthRadiusKm = 6371;
+
+  const dLat = degreesToRadians(lat2-lat1);
+  const dLon = degreesToRadians(lon2-lon1);
+
+  lat1 = degreesToRadians(lat1);
+  lat2 = degreesToRadians(lat2);
+
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var result =  earthRadiusKm * c;
+  return Math.round( result * 10 ) / 10;
+}

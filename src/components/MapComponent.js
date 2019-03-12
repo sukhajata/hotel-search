@@ -8,11 +8,24 @@ class MapComponent extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            bounds: null,
-            center: { lat: 16.040074, lng: 105.222872 },
-            zoom: 15,
-        };
+        if (this.props.start) {
+            const { latitude, longitude } = this.props.start;
+
+            var position = new window.google.maps.LatLng(parseFloat(latitude),parseFloat(longitude));
+            
+            this.state = {
+                bounds: null,
+                center: position,
+                zoom: 15,
+                marker: position,
+            };
+        } else {
+            this.state = {
+                bounds: null,
+                center: { lat: 16.040074, lng: 105.222872 },
+                zoom: 15,
+            };
+        }
         this.searchBoxRef = React.createRef();
         this.mapRef = React.createRef();
     }
@@ -58,30 +71,34 @@ class MapComponent extends Component {
 
         return (
             <div>
-                <SearchBox
-                    ref={this.searchBoxRef}
-                    bounds={bounds}
-                    onPlacesChanged={this.onPlacesChanged}
-                    controlPosition={window.google.maps.ControlPosition.TOP_LEFT}
-                >
-                    <input
-                        type="text"
-                        placeholder="Search.."
-                        style={{
-                            boxSizing: `border-box`,
-                            border: `1px solid transparent`,
-                            width: `300px`,
-                            height: `40px`,
-                            marginTop: `10px`,
-                            padding: `0 12px`,
-                            borderRadius: `3px`,
-                            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-                            fontSize: `16px`,
-                            outline: `none`,
-                            textOverflow: `ellipses`,
-                        }}
-                    />
-                </SearchBox>
+                {this.props.search &&
+                    <div>
+                    <SearchBox
+                        ref={this.searchBoxRef}
+                        bounds={bounds}
+                        onPlacesChanged={this.onPlacesChanged}
+                        controlPosition={window.google.maps.ControlPosition.TOP_LEFT}
+                    >
+                        <input
+                            type="text"
+                            placeholder="Search.."
+                            style={{
+                                boxSizing: `border-box`,
+                                border: `1px solid transparent`,
+                                width: `300px`,
+                                height: `40px`,
+                                marginTop: `10px`,
+                                padding: `0 12px`,
+                                borderRadius: `3px`,
+                                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                                fontSize: `16px`,
+                                outline: `none`,
+                                textOverflow: `ellipses`,
+                            }}
+                        />
+                    </SearchBox>
+                    </div>
+                }
                 <GoogleMap
                     ref={this.mapRef}
                     defaultZoom={zoom}
@@ -93,7 +110,7 @@ class MapComponent extends Component {
                 {marker &&  
                     <Marker 
                         key="101"
-                        position={{ lat: marker.latitude, lng: marker.longitude }} 
+                        position={marker}
                     />
                 }
                 </GoogleMap>

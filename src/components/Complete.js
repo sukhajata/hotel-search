@@ -4,16 +4,14 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-
+import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles';
 import styles from '../styles';
-
+import { Typography } from '@material-ui/core';
 
 import { getRoom } from '../services/api';
 
-class Confirm extends React.Component {
+class Complete extends React.Component {
 
     state = {
         hotelNameEnglish: '',
@@ -25,9 +23,8 @@ class Confirm extends React.Component {
     }
 
     async componentDidMount() {
-        const result = await getRoom(this.props.match.params.id);
-        const { arrive, depart } = this.props.match.params;
-        const days = Math.floor((Date.parse(depart) - Date.parse(arrive)) / (1000*60*60*24));
+        const result = await getRoom(localStorage.getItem('roomId'));
+        const days = Math.floor((Date.parse(localStorage.getItem('depart')) - Date.parse(localStorage.getItem('arrive'))) / (1000*60*60*24));
         if (result !== null) {
             this.setState({
                 hotelNameEnglish: result.hotel_name_english,
@@ -40,37 +37,24 @@ class Confirm extends React.Component {
         }
     }
 
-    handleClickBack = () => {
-        const { arrive, depart, id } = this.props.match.params;
-        this.props.history.push('/hotel-details/' + arrive + '/' + depart + "/" + id + "/");
-    }
-
-    handleClickContinue = () => {
-        const { arrive, depart, id } = this.props.match.params;
-        localStorage.setItem('arrive', arrive);
-        localStorage.setItem('depart', depart);
-        localStorage.setItem('roomId', id);
-        localStorage.setItem('total', this.state.total);
-        this.props.history.push('/customer-details/');
-    }
-
-
     render() {
-        const { arrive, depart } = this.props.match.params;
         const { hotelNameEnglish, hotelNameThai, roomTypeEnglish, roomTypeThai, price, total } = this.state;
         const { classes } = this.props;
 
         return (
-            <div className={classes.confirm}>
+            <div className={classes.container}>
+                <Typography variant="h5" style={{margin: 20}}>
+                    Transaction complete / การทำธุรกรรมเสร็จสมบูรณ์
+                </Typography>
                 <Table >
                     <TableBody>
                          <TableRow key="arrive">
                             <TableCell>Arrive / มาถึง</TableCell>
-                            <TableCell >{arrive}</TableCell>
+                            <TableCell >{localStorage.getItem('arrive')}</TableCell>
                         </TableRow>
                         <TableRow key="depart">
                             <TableCell>Depart / ออก</TableCell>
-                            <TableCell >{depart}</TableCell>
+                            <TableCell >{localStorage.getItem('depart')}</TableCell>
                         </TableRow>
                         <TableRow key="hotel">
                             <TableCell>Hotel / โรงแรม</TableCell>
@@ -90,29 +74,9 @@ class Confirm extends React.Component {
                         </TableRow>
                     </TableBody>
                 </Table>
-                <Grid container spacing={8}>
-                    <Grid item>
-                        <Button 
-                            variant="contained" 
-                            color="secondary"
-                            onClick={this.handleClickBack}    
-                        >
-                            Back / กลับ
-                        </Button>
-                    </Grid>
-                    <Grid item>
-                        <Button 
-                            variant="contained" 
-                            color="primary"
-                            onClick={this.handleClickContinue}    
-                        >
-                            Continue / ต่อไป
-                        </Button>
-                    </Grid>
-                </Grid>
             </div>
         )
     }
 }
 
-export default withStyles(styles)(Confirm);
+export default withStyles(styles)(Complete);

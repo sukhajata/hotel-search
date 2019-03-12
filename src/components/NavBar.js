@@ -19,15 +19,16 @@ class NavBar extends React.Component {
     }
 
     render () {
-        const { classes, toggleDrawer, showSearchBox } = this.props;
+        const { classes, toggleDrawer, showSearchBox, title } = this.props;
+        
         return (
             <AppBar position="fixed">
                 <Toolbar>
                     <IconButton className={classes.menuButton} onClick={toggleDrawer(true)} color="inherit" aria-label="Open drawer">
                         <MenuIcon />
                     </IconButton>
-                    <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                        Hotels Khemarat
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        {title}
                     </Typography>
                     {showSearchBox &&
                         <React.Fragment>

@@ -119,7 +119,8 @@ class AddHotel extends React.Component {
       lat: lat,
       lng: lng
     };
-    const result = await addHotel(data);
+    console.log(data);
+    /*const result = await addHotel(data);
     if (result !== null) {
       this.state.roomNumbers.forEach(async item => {
         const roomData = {
@@ -132,7 +133,7 @@ class AddHotel extends React.Component {
       })
     } else {
       alert("Error");
-    }
+    }*/
 
     
   }
@@ -161,6 +162,7 @@ class AddHotel extends React.Component {
           containerElement={<div style={{ height: `400px` }} />}
           mapElement={<div style={{ height: `100%` }} />}
           onPlaceFound={this.onPlaceFound}
+          search="true"
         />
         <form className={classes.container} noValidate autoComplete="off">
           <TextField
@@ -324,7 +326,8 @@ class AddHotel extends React.Component {
 
           <Button 
             onClick={this.onFormSubmit}
-            variant="outlined"
+            variant="contained"
+            color="primary"
             style={{ margin: 8 }}
           >
             Submit

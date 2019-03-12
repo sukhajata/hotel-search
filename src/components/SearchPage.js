@@ -12,14 +12,46 @@ import { withRouter } from 'react-router-dom'
 class SearchPage extends React.Component {
 
     state ={
-        arrive: null,
-        depart: null,
+        arrive: this.getToday(),
+        depart: this.getNextDay(new Date()),
     }
 
     handleChange = name => event => {
-        this.setState({ [name]: event.target.value })
+        const date = new Date(event.target.value);
+        if (date < new Date()) {
+            return;
+        }
+        if (name === 'arrive') {
+            this.setState({
+                arrive: event.target.value,
+                depart: this.getNextDay(new Date(event.target.value)),
+            })
+        } else {
+            if (date <= new Date(this.state.arrive)) {
+                return;
+            }
+            this.setState({ [name]: event.target.value })
+        }
     }
 
+
+    getDate(dd) {
+        const year = dd.getFullYear();
+        const month = dd.getMonth() + 1;
+        const day = dd.getDate();
+        return year + '-' + (month.toString().length === 1 ? '0' + month.toString() : month.toString()) + '-' + (day.toString().length === 1 ? '0' + day.toString() : day.toString());
+    }
+
+    getToday() {
+        const dd = new Date();
+        return this.getDate(dd);
+    }
+
+    getNextDay(date) {
+        const ms = date.getTime() + (1000*60*60*24);
+        const dd = new Date(ms);
+        return this.getDate(dd);
+    }
 
     render() {
         const { classes } = this.props;
@@ -38,12 +70,13 @@ class SearchPage extends React.Component {
         return (
             <div className={classes.searchPage}>
                 <Paper className={classes.searchForm}>
-                    <form className={classes.container} noValidate>
+                    <form  noValidate>
                         <TextField
                             id="arrive"
                             label="Arrive / มาถึง"
                             type="date"
                             fullWidth
+                            value={this.state.arrive}
                             className={classes.dateField}
                             onChange={this.handleChange('arrive')}
                             InputLabelProps={{
@@ -55,6 +88,7 @@ class SearchPage extends React.Component {
                             label="Depart / ออก"
                             fullWidth
                             type="date"
+                            value={this.state.depart}
                             className={classes.dateField}
                             onChange={this.handleChange('depart')}
                             InputLabelProps={{

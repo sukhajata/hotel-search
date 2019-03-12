@@ -33,7 +33,7 @@ export default {
       color: '#FFF',
     },
     title: {
-      display: 'none',
+      color: theme.palette.common.white,
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
@@ -100,6 +100,9 @@ export default {
       color: 'inherit',
       width: '100%',
     },
+    thumbnail: {
+      width: 100,
+    },
     inputInput: {
       paddingTop: theme.spacing.unit,
       paddingRight: theme.spacing.unit,
@@ -117,6 +120,9 @@ export default {
     content: {
       marginTop: 70,
       
+    },
+    headerHotel: {
+      margin: 10,
     },
     lessonContent: {
       margin: 12,
@@ -240,6 +246,11 @@ export default {
       paddingTop: 10,
       paddingBottom: 10,
     },
+    container: {
+      marginTop: 70,
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
     titleCard: {
       margin: 10,
     },
@@ -258,6 +269,12 @@ export default {
       height: '24%',
       margin: 'auto',
       display: 'block',
+    },
+    imageModalPortrait: {
+      width: '80%',
+    },
+    imageModalLandscape: {
+      height: '80%',
     },
     imageTable: {
       width: 'auto',

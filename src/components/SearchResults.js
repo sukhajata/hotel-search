@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { search } from '../services/api';
 
 const styles = {
-  root: {
-    width: '100%',
-    overflowX: 'auto',
+  block: {
+    width: '95%',
+    margin: 10,
   },
   table: {
     minWidth: 400,
@@ -31,6 +30,7 @@ class SearchResults extends React.Component {
   async componentDidMount() {
     const { arrive, depart } = this.props.match.params;
     const hotels = await search(arrive, depart);
+    
     this.setState({
       hotels
     });
@@ -38,38 +38,45 @@ class SearchResults extends React.Component {
 
   handleClick = id => {
     const { arrive, depart } = this.props.match.params;
-    this.props.history.push('/confirm/' + arrive + '/' + depart + "/" + id + "/");
+    this.props.history.push('/hotel-details/' + arrive + '/' + depart + "/" + id + "/");
   }
 
   render() {
-  const { classes } = this.props;
-  const { hotels } = this.state;
-  
-  return (
-    <Paper className={classes.root}>
-        {hotels.map(h => (
-            <div key={h.hotel_id}>
-                <Typography variant="h6" style={{ padding: 15 }}>
-                    {h.hotel_name_english + " / " + h.hotel_name_thai}
-                </Typography>
-                <Table className={classes.table}>
-                    <TableBody>
-                    {h.rooms.map(n => (
-                         <TableRow key={n.room_id}>
-                            <TableCell component="th" scope="row" onClick={() => this.handleClick(n.room_id)}> 
-                                {n.room_type_english + " / " + n.room_type_thai}
-                            </TableCell>
-                            <TableCell align="right">{n.price}</TableCell>
-                        </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-           </div>
-        ))}
-     
-    </Paper>
-  );
-}
+    const { classes } = this.props;
+    const { hotels } = this.state;
+    
+    return (
+        <React.Fragment>
+          {hotels.map(h => (
+            <Paper key={h.hotel_id} className={classes.block} onClick={() => this.handleClick(h.hotel_id)}>
+              <Grid container  spacing={8}>
+                {h.image_name && 
+                <Grid item>
+                  <img style={{height:200, width: 200 }}
+                    src={"https://sukhajata.com/h/img/small/" + h.image_name}
+                    alt="Nice to see everyone"
+                  />
+                </Grid>
+                }
+                <Grid item>
+                  <Typography variant="body2" style={{ paddingTop: 15, paddingLeft: 15 }}>
+                      {h.hotel_name_english}
+                  </Typography>
+                  <Typography variant="body2" style={{ paddingLeft: 15 }}>
+                    {h.hotel_name_thai}
+                  </Typography>
+                  <Typography variant="body2" style={{ padding: 15 }}>
+                    {h.min_price}฿
+                  </Typography>
+                </Grid>
+              
+              </Grid>
+            </Paper>       
+          ))}
+      </React.Fragment>
+      
+    );
+  }
 }
 
 SearchResults.propTypes = {

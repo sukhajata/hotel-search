@@ -24,6 +24,11 @@ export async function getHotelRooms(id) {
     return result;
 }
 
+export async function getHotelPhotos(id) {
+    const result = await get("https://sukhajata.com/h/hotel/photos.php?id=" + id.toString());
+    return result;
+}
+
 export async function search(arrive, depart) {
     const result = await get("https://sukhajata.com/h/hotel/search.php?arrive=" + arrive + "&depart=" + depart);
     return result;
@@ -65,6 +70,16 @@ export async function addHotel(data) {
 
 export async function addRoomType(data) {
     const result = await post("https://sukhajata.com/h/room/create.php", data);
+    return result;
+}
+
+export async function addHotelPhoto(data) {
+    const result = await post("https://sukhajata.com/h/hotel/add-photo.php", data);
+    return result;
+}
+
+export async function addRoomPhoto(data) {
+    const result = await post("https://sukhajata.com/h/hotel/add-room-photo.php", data);
     return result;
 }
 

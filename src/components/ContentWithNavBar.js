@@ -46,6 +46,7 @@ class ContentWithNavBar extends React.Component {
                 <NavBar 
                     toggleDrawer={this.toggleDrawer}
                     showSearchBox={showSearchBox}
+                    title={this.props.title}
                 />
                 <div className={classes.content}>
                     {children}

@@ -10,12 +10,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
-import { updateHotel, updateRoom, getTambons, getHotel, getHotelRooms } from '../services/api';
+import { updateHotel, updateRoom, getTambons, getHotel, getHotelRooms, getHotelPhotos, addHotelPhoto, addRoomPhoto } from '../services/api';
 
 
 const styles = theme => ({
   container: {
+    marginTop: 70,
     display: 'flex',
     flexWrap: 'wrap',
   },
@@ -41,6 +46,7 @@ class EditHotel extends React.Component {
   state = {
     tambons: [],
     hotelRooms: [],
+    photos: [],
     id: 0,
     nameThai: '',
     nameEnglish: '',
@@ -49,6 +55,10 @@ class EditHotel extends React.Component {
     addressEnglish: '',
     tambonId: 1,
     labelWidth: 0,
+    imageName: '',
+    isDefault: false,
+    roomImageName: '',
+    roomImageIsDefault: false,
   };
 
   async componentDidMount() {
@@ -57,12 +67,14 @@ class EditHotel extends React.Component {
     const hotels = await getHotel(this.props.match.params.id);
     const hotelRooms = await getHotelRooms(this.props.match.params.id);
     
-    if (tambons && hotels && hotelRooms) {
+    const photos = await getHotelPhotos(this.props.match.params.id);
+    if (tambons && hotels && hotelRooms && photos) {
         const hotel = hotels[0];
         this.setState({
             labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
             tambons,
             hotelRooms,
+            photos,
             id: hotel.id,
             nameThai: hotel.name_thai,
             nameEnglish: hotel.name_english,
@@ -106,7 +118,7 @@ class EditHotel extends React.Component {
   }
 
   onFormSubmit = async () => {
-    const { id, nameEnglish, nameThai, addressEnglish, addressThai, tambonId, phone, lat, lng } = this.state;
+    const { id, nameEnglish, nameThai, addressEnglish, addressThai, tambonId, phone } = this.state;
     const data = {
         name_english: nameEnglish,
         name_thai: nameThai,
@@ -129,9 +141,42 @@ class EditHotel extends React.Component {
     } else {
       alert("Error");
     }
-
-    
   }
+
+  addImage = async () => {
+    const data = {
+      hotel_id: this.props.match.params.id,
+      image_name: this.state.imageName,
+      is_default: this.state.isDefault,
+    };
+    const result = await addHotelPhoto(data);
+    if (result === null) {
+      alert("An error occurred.");
+    } else {
+      const photos = await getHotelPhotos(this.props.match.params.id);
+      this.setState({
+        photos
+      })
+    }
+  }
+
+  addRoomImage = async (room_id) => {
+    const data = {
+      room_id, 
+      image_name: this.state.roomImageName,
+      is_default: this.state.roomImageIsDefault,
+    };
+    const result = await addRoomPhoto(data);
+    if (result === null) {
+      alert("An error occurred.");
+    } else {
+      const hotelRooms = await getHotelRooms(this.props.match.params.id);
+      this.setState({
+        hotelRooms
+      })
+    }
+
+  } 
 
   onPlaceFound = place => {
     const point = place.geometry.location;
@@ -144,12 +189,16 @@ class EditHotel extends React.Component {
     })
   }
 
+  handleImageNameChange = event => {
+
+  }
+
   render() {
     const { classes } = this.props;
-    const { nameEnglish, nameThai, addressEnglish, addressThai, phone, tambons, hotelRooms } = this.state;
+    const { nameEnglish, nameThai, addressEnglish, addressThai, phone, tambons, hotelRooms, photos } = this.state;
 
     return (
-      <React.Fragment>
+      <div >
         <form className={classes.container} noValidate autoComplete="off">
           <TextField
             id="hotel-name-thai"
@@ -250,11 +299,61 @@ class EditHotel extends React.Component {
               )}
             </Select>
           </FormControl>
+          <div style={{margin: 10, width:'100%'}}>
+          {photos.map(photo => 
+              <Grid container key={photo.id} spacing={8}>
+                <Grid item>
+                  <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={this.handleChange('isDefault')}
+                      value="true"
+                    />
+                  }
+                  label="Default"
+                />
+                </Grid>  
+                <Grid item>
+                  <img style={{width:100}} src={"https://sukhajata.com/h/img/small/" + photo.image_name} alt={photo.image_name} />
+                </Grid>
+                
+              </Grid>
+            )}
+            </div>
+          <Paper style={{ margin: 10, padding: 10, width: '100%'}} >
+            <Typography variant="h6">
+              Add image
+            </Typography>
+            <TextField
+              label="Image name"
+              style={{ margin: 8, width: 200 }}
+              
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleChange('imageName')}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={this.handleChange('isDefault')}
+                  value="true"
+                />
+              }
+              label="Default"
+            />
+            <Button variant="contained" color="secondary" onClick={this.addImage}>Add</Button>
+          </Paper>
           
-          {hotelRooms.map(roomType => (
-            <div key={roomType.id}>
-              <Typography variant="body1">
-                {roomType.name_english + " / " + roomType.name_thai}
+          <Typography variant="h5" style={{margin: 10}}>
+              Rooms 
+          </Typography>
+          {hotelRooms.map(room => (
+            <Paper key={room.id} style={{ margin: 10, width: '100%' }}>
+              <Typography variant="h6" style={{ padding: 10 }}>
+                {room.name_english + " / " + room.name_thai}
               </Typography>
               <TextField
                 label="count / จำนวน"
@@ -262,8 +361,8 @@ class EditHotel extends React.Component {
                 margin="normal"
                 type="number"
                 variant="outlined"
-                value={roomType.count}
-                onChange={this.handleRoomCountChange(roomType.id)}
+                value={room.count}
+                onChange={this.handleRoomCountChange(room.id)}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -274,13 +373,56 @@ class EditHotel extends React.Component {
                 margin="normal"
                 type="number"
                 variant="outlined"
-                value={roomType.price}
-                onChange={this.handleRoomPriceChange(roomType.id)}
+                value={room.price}
+                onChange={this.handleRoomPriceChange(room.id)}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
-            </div>
+              {room.images.map(photo => (
+                 <Grid container key={photo.image_name} spacing={8}>
+                  <Grid item>
+                    <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={this.handleChange('numsy')}
+                        checked={photo.is_default === "1"}
+                      />
+                    }
+                    label="Default"
+                  />
+                  </Grid>  
+                  <Grid item>
+                    <img style={{width:100}} src={"https://sukhajata.com/h/img/small/" + photo.image_name} alt={photo.image_name} />
+                  </Grid>
+                 
+                </Grid>
+              
+              ))}
+              <Typography variant="body1" style={{ padding: 10 }}>
+                Add image
+              </Typography>
+              <TextField
+                label="Image name"
+                style={{ margin: 8, width: 200 }}
+                margin="normal"
+                variant="outlined"
+                onChange={this.handleChange('roomImageName')}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={this.handleChange('roomImageIsDefault')}
+                    value="true"
+                  />
+                }
+                label="Default"
+              />
+              <Button variant="contained" color="secondary" onClick={() => this.addRoomImage(room.id)}>Add</Button>
+            </Paper>
           ))}
 
           <Button 
@@ -293,7 +435,7 @@ class EditHotel extends React.Component {
           </Button>
         </form>
      
-    </React.Fragment>
+    </div>
     );
   }
 }
