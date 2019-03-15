@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'reactn';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -72,6 +72,8 @@ class CreditDetails extends React.Component {
     render() {
         const{ classes } = this.props;
         const { number, name, expiry, cvc, focused, issuer } = this.state;
+        const { language, lanCode } = this.global;
+
         return (
             <div>
                 <Cards
@@ -81,10 +83,10 @@ class CreditDetails extends React.Component {
                     cvc={cvc}
                     focused={focused}
                 />
-                <form ref={c => (this.form = c)} className={classes.container} onSubmit={this.handleSubmit}>
+                <form className={classes.container} ref={c => (this.form = c)} onSubmit={this.handleSubmit}>
                     <TextField
                         name="number"
-                        label="Number / หมายเลข"
+                        label={language.number}
                         pattern="[\d| ]{16,22}"
                         required
                         style={{ margin: 8 }}
@@ -99,7 +101,7 @@ class CreditDetails extends React.Component {
                     />
                     <TextField
                         name="name"
-                        label="Name / ชื่อบนบัตร"
+                        label={language.nameOnCard}
                         required
                         style={{ margin: 8 }}
                         fullWidth
@@ -113,7 +115,7 @@ class CreditDetails extends React.Component {
                     />
                      <TextField
                         name="expiry"
-                        label="Expiry / หมดอายุ"
+                        label={language.expiry}
                         required
                         style={{ margin: 8 }}
                         fullWidth
@@ -140,11 +142,14 @@ class CreditDetails extends React.Component {
                         }}
                     />
                     <input type="hidden" name="issuer" value={issuer} />
-                    
-                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                        PAY / จ่าย
-                    </Button>
-                    
+
+                    <div style={{margin: 20, textAlign: 'center'}}>
+                        <div style={{display: 'inline-block'}}>
+                            <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                                {language.pay}
+                            </Button>
+                        </div>
+                    </div>
                 </form>
             </div>
         )

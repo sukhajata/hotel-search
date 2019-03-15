@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'reactn';
 import ContentWithNavBar from './components/ContentWithNavBar';
 import AddHotel from './components/AddHotel';
 import ListHotels from './components/ListHotels';
@@ -13,10 +13,14 @@ import Complete from './components/Complete';
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
+
 import './App.css';
 
 class App extends Component {
+
   render() {
+    const { language } = this.global;
+
     return (
         <BrowserRouter>
           <Switch>
@@ -29,7 +33,7 @@ class App extends Component {
               <Route 
                 path="/list-hotels/"
                 render={ props => 
-                  <ContentWithNavBar {...props} title="Hotels">
+                  <ContentWithNavBar {...props} title={language.listHotels}>
                     <ListHotels {...props} />
                   </ContentWithNavBar>
                 }
@@ -37,7 +41,7 @@ class App extends Component {
               <Route
                 path="/add-hotel/"
                 render={ props => 
-                  <ContentWithNavBar {...props} title="Add Hotel">
+                  <ContentWithNavBar {...props} title={language.addHotel}>
                     <AddHotel {...props} />
                   </ContentWithNavBar>
                 }
@@ -45,7 +49,7 @@ class App extends Component {
               <Route
                 path="/edit-hotel/:id"
                 render={ props => 
-                  <ContentWithNavBar {...props} title="Edit">
+                  <ContentWithNavBar {...props} title={language.editHotel}>
                     <EditHotel {...props}/>
                   </ContentWithNavBar>
                 }
@@ -53,7 +57,7 @@ class App extends Component {
               <Route
                 path="/search-results/:arrive/:depart"
                 render={ props =>
-                  <ContentWithNavBar {...props} title="Results / ผลการค้นหา">
+                  <ContentWithNavBar {...props} title={language.results}>
                     <SearchResults {...props}/>
                   </ContentWithNavBar>  
                 }
@@ -61,7 +65,7 @@ class App extends Component {
               <Route
                 path="/hotel-details/:arrive/:depart/:id"
                 render={props => 
-                  <ContentWithNavBar {...props} title="Select room / เลือกห้อง">
+                  <ContentWithNavBar {...props} title={language.selectRoom}>
                     <HotelDetails {...props}/>
                   </ContentWithNavBar>  
                 }
@@ -69,7 +73,7 @@ class App extends Component {
               <Route
                 path="/confirm/:arrive/:depart/:id"
                 render={ props => 
-                  <ContentWithNavBar {...props} title="Confirm / ยืนยัน">
+                  <ContentWithNavBar {...props} title={language.confirm}>
                     <Confirm {...props}/>
                   </ContentWithNavBar>
                 }
@@ -77,7 +81,7 @@ class App extends Component {
               <Route
                 path="/customer-details/"
                 render={ props => 
-                  <ContentWithNavBar {...props} title="Details / รายละเอียด">
+                  <ContentWithNavBar {...props} title={language.customerDetails}>
                     <CustomerDetails {...props} />
                   </ContentWithNavBar>
                 }
@@ -85,7 +89,7 @@ class App extends Component {
               <Route
                 path="/credit-details/"
                 render={ props => 
-                  <ContentWithNavBar {...props} title="Payment details / รายละเอียดการจ่ายเงิน">
+                  <ContentWithNavBar {...props} title={language.paymentDetails}>
                     <CreditDetails {...props} />
                   </ContentWithNavBar>
                 }
@@ -93,7 +97,7 @@ class App extends Component {
               <Route 
                 path="/completed"
                 render={ props =>
-                  <ContentWithNavBar {...props} title="Complete / เสร็จแล้ว">
+                  <ContentWithNavBar {...props} >
                     <Complete {...props} />
                   </ContentWithNavBar>
                 }

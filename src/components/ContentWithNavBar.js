@@ -1,4 +1,5 @@
 import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import NavBar from './NavBar';
 import SideNav from './SideNav';
@@ -38,6 +39,7 @@ class ContentWithNavBar extends React.Component {
         }
         return (
             <React.Fragment>
+                <CssBaseline />
                 <SideNav 
                     sideOpen={sideOpen}
                     toggleDrawer={this.toggleDrawer}

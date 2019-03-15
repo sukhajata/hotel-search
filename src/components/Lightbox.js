@@ -24,14 +24,13 @@ class Lightbox extends React.Component {
 
         return (
             <Modal
-                style={{textAlign: 'center'}}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
                 open={open} 
                 onClose={this.handleModalClose}
                 className="numnums"
             >
-                <div>
+                <div >
                     <Button 
                         onClick={handleModalClose}
                         style={{ color: '#fff', fontSize: '2em', position: 'absolute', right: 15, top: 15, zIndex: 1000 }}
@@ -39,14 +38,13 @@ class Lightbox extends React.Component {
                     <SwipeableViews >
                         {images.map(image => 
                             <img key={image.image_name} 
-                                style={{ 
-                                    width: imageWidth, 
-                                    height: imageHeight, 
-                                    paddingTop: imageVerticalMargin,
-                                    marginBottom: imageVerticalMargin,
-                                    marginLeft: imageHorizontalMargin,
-                                    marginRight: imageHorizontalMargin
-                                }}
+                            style={{ 
+                                width: imageWidth, 
+                                marginTop: imageVerticalMargin,
+                                marginBottom: imageVerticalMargin,
+                                marginLeft: imageHorizontalMargin,
+                                marginRight: imageHorizontalMargin
+                            }}
                                 src={"https://sukhajata.com/h/img/full/" + image.image_name}
                                 alt="Nice to see everyone"
                             />
@@ -59,3 +57,14 @@ class Lightbox extends React.Component {
 }
 
 export default Lightbox;
+
+/*
+                             style={{ 
+                                    width: imageWidth, 
+                                    height: imageHeight, 
+                                    paddingTop: imageVerticalMargin,
+                                    marginBottom: imageVerticalMargin,
+                                    marginLeft: imageHorizontalMargin,
+                                    marginRight: imageHorizontalMargin
+                                }}
+                                */

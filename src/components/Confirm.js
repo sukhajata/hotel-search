@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'reactn';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -59,57 +59,59 @@ class Confirm extends React.Component {
         const { arrive, depart } = this.props.match.params;
         const { hotelNameEnglish, hotelNameThai, roomTypeEnglish, roomTypeThai, price, total } = this.state;
         const { classes } = this.props;
+        const { language, lanCode } = this.global;
 
         return (
             <div className={classes.confirm}>
                 <Table >
                     <TableBody>
                          <TableRow key="arrive">
-                            <TableCell>Arrive / มาถึง</TableCell>
+                            <TableCell>{language.arrive}</TableCell>
                             <TableCell >{arrive}</TableCell>
                         </TableRow>
                         <TableRow key="depart">
-                            <TableCell>Depart / ออก</TableCell>
+                            <TableCell>{language.depart}</TableCell>
                             <TableCell >{depart}</TableCell>
                         </TableRow>
                         <TableRow key="hotel">
-                            <TableCell>Hotel / โรงแรม</TableCell>
-                            <TableCell >{hotelNameEnglish + " / " + hotelNameThai}</TableCell>
+                            <TableCell>{language.hotel}</TableCell>
+                            <TableCell >{lanCode === 'en' ? hotelNameEnglish : hotelNameThai}</TableCell>
                         </TableRow>
                         <TableRow key="room">
-                            <TableCell>Room / ห้อง</TableCell>
-                            <TableCell>{roomTypeEnglish + " / " + roomTypeThai}</TableCell>
+                            <TableCell>{language.room}</TableCell>
+                            <TableCell>{lanCode === 'en' ? roomTypeEnglish : roomTypeThai}</TableCell>
                         </TableRow>
                         <TableRow key="price">
-                            <TableCell>Price / ราคา</TableCell>
+                            <TableCell>{language.price}</TableCell>
                             <TableCell>{price}</TableCell>
                         </TableRow>
                         <TableRow key="total">
-                            <TableCell>Total / ทั้งหมด</TableCell>
+                            <TableCell>{language.total}</TableCell>
                             <TableCell>{total}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
-                <Grid container spacing={8}>
-                    <Grid item>
+                <div style={{margin: 20, textAlign: 'center'}}>
+                    <div style={{display: 'inline-block'}}>
                         <Button 
                             variant="contained" 
                             color="secondary"
+                            style={{marginRight: 5}}
                             onClick={this.handleClickBack}    
                         >
-                            Back / กลับ
+                            {language.back}
                         </Button>
-                    </Grid>
-                    <Grid item>
+
                         <Button 
                             variant="contained" 
                             color="primary"
                             onClick={this.handleClickContinue}    
+                            style={{marginLeft: 5}}
                         >
-                            Continue / ต่อไป
+                            {language.continue}
                         </Button>
-                    </Grid>
-                </Grid>
+                    </div>
+                </div>
             </div>
         )
     }

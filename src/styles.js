@@ -14,6 +14,9 @@ export default {
     menuButton: {
       marginLeft: -12,
       marginRight: 20,
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
     },
     navigation: {
       width: '100%',
@@ -76,9 +79,11 @@ export default {
     },
     searchForm: {
       width: '50%',
-      heigth: '50%',
       margin: 'auto',
-      padding: 50,
+      paddingLeft: 50,
+      paddingRight: 50,
+      paddingTop: 30,
+      paddingBottom: 30,
     },
     hotelButton: {
       backgroundColor: theme.palette.secondary.main,
@@ -119,7 +124,23 @@ export default {
     },
     content: {
       marginTop: 70,
-      
+      flexGrow: 1,
+      [theme.breakpoints.up('sm')]: {
+        width: `calc(100% - 250px)`,
+        marginLeft: 250,
+      },
+    },
+    appBar: {
+      marginLeft: 250,
+      [theme.breakpoints.up('sm')]: {
+        width: `calc(100% - 250px)`,
+      },
+    },
+    drawer: {
+      [theme.breakpoints.up('sm')]: {
+        width: 250,
+        flexShrink: 0,
+      },
     },
     headerHotel: {
       margin: 10,
@@ -247,7 +268,7 @@ export default {
       paddingBottom: 10,
     },
     container: {
-      marginTop: 70,
+      marginTop: 15,
       display: 'flex',
       flexWrap: 'wrap',
     },

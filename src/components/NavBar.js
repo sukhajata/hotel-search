@@ -8,6 +8,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import styles from '../styles';
 
+import Languages from './Languages';
+
+import thaiFlag from '../img/thai-flag.png';
+import britishFlag from '../img/british-flag-new.png';
+
 class NavBar extends React.Component { 
     
     handleKeyUp = (event) => {
@@ -20,7 +25,7 @@ class NavBar extends React.Component {
         const { classes, toggleDrawer, title } = this.props;
         
         return (
-            <AppBar position="fixed">
+            <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <IconButton className={classes.menuButton} onClick={toggleDrawer(true)} color="inherit" aria-label="Open drawer">
                         <MenuIcon />
@@ -28,7 +33,7 @@ class NavBar extends React.Component {
                     <Typography className={classes.title} variant="h6" noWrap>
                         {title}
                     </Typography>
-                   
+                    <Languages />
                 </Toolbar>
             </AppBar>
         )

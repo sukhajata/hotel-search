@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'reactn';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Launch from '@material-ui/icons/Launch';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+
+import SwipeableViews from 'react-swipeable-views';
 
 import Lightbox from './Lightbox';
 import MapComponent from './MapComponent';
@@ -69,9 +71,10 @@ class HotelDetails extends React.Component {
         const { classes } = this.props;
         const { hotel, rooms, hotelPhotos, popperOpen, lightboxImages, distance } = this.state;
         const mapUrl = "https://maps.googleapis.com/maps/api/js?key=" + keys.GOOGLE_MAPS_API_KEY + "&v=3.exp&libraries=geometry,drawing,places";
-        
+        const { language, lanCode } = this.global;
+
         return (
-            <div className={classes.content} >
+            <div  >
                 <Lightbox 
                     images={lightboxImages} 
                     open={popperOpen}
@@ -97,13 +100,10 @@ class HotelDetails extends React.Component {
                 <div>
                     <div style={{ margin: 10 }}>
                         <Typography variant="h5">
-                            {hotel.name_english}
-                        </Typography>
-                        <Typography variant="h5">
-                            {hotel.name_thai}
+                            {lanCode === 'th' ? hotel.name_thai : hotel.name_english}
                         </Typography>
                         <Typography variant="h6">
-                            {distance}km from Khemmarat
+                            {distance}{language.fromKhemmarat}
                         </Typography>
                     </div>
                     
@@ -118,10 +118,8 @@ class HotelDetails extends React.Component {
                     
                     <div style={{margin: 10}}>
                         <Typography variant="h6">
-                            {hotel.address_english + " " + hotel.tambon_english}
-                        </Typography>
-                        <Typography variant="h6">
-                            {hotel.address_thai + " " + hotel.tambon_thai}
+                            {lanCode === 'en' ? hotel.address_english + " " + hotel.tambon_english
+                            : hotel.address_thai + " " + hotel.tambon_thai}
                         </Typography>
                     </div>
                     </div>
@@ -130,28 +128,23 @@ class HotelDetails extends React.Component {
                 <div style={{backgroundColor: '#f2f2f2', paddingTop: 5}}>
                 {rooms.map(n => 
                     <Paper style={{ margin: 15 }} key={n.id} >
-                        <Grid container direction='column' spacing={8} onClick={() => this.handleClick(n.room_id)}>
+                        <Grid container spacing={8} onClick={() => this.handleClick(n.room_id)}>
                             <Grid item>
-                            {n.images.length > 0 &&
-                                <div style={{position: 'relative'}} onClick={() => this.handleModalOpen(n.images)}>
-                                    <img key={n.images[0].image_name} style={{ width: '100%' }}
-                                        src={"https://sukhajata.com/h/img/full/" + n.images[0].image_name}
-                                        alt="Nice to see everyone"
-                                    />
-                                    <Launch 
-                                        style={{color: '#fff', position: 'absolute', bottom: 5, right: 5}}
-                                        onClick={() => this.handleModalOpen(n.images)}
-                                    />
-                                </div>
-                            }
+                                <SwipeableViews >
+                                {n.images.length > 0 &&
+                                    n.images.map(image =>
+                                        <img key={image.image_name} style={{ width: '100%', maxWidth: 400 }}
+                                            src={"https://sukhajata.com/h/img/full/" + image.image_name}
+                                            alt="Nice to see everyone"
+                                        />
+                                    )
+                                }
+                                </SwipeableViews>
                             </Grid>
 
                             <Grid item style={{padding: 15}}>
                                 <Typography variant="body1" >
-                                    {n.name_english}
-                                </Typography>
-                                <Typography variant="body1" style={{paddingBottom: 15}}>
-                                    {n.name_thai}
+                                    {lanCode === 'th' ? n.name_thai : n.name_english}
                                 </Typography>
                                 <Typography variant="h6" style={{ paddingBottom: 15}}>
                                     {n.price}฿
@@ -161,7 +154,7 @@ class HotelDetails extends React.Component {
                                     color="primary"
                                     onClick={() => this.selectRoom(n.id)}
                                 >
-                                    Select / เลือก
+                                    {language.select}
                                 </Button>
                             </Grid>
                         </Grid>
@@ -176,13 +169,16 @@ class HotelDetails extends React.Component {
 export default withStyles(styles)(HotelDetails);
 /*
  <Modal
-                                    style={{textAlign: 'center'}}
-                                    aria-labelledby="simple-modal-title"
-                                    aria-describedby="simple-modal-description"
-                                    open={popperOpen} 
-                                    onClose={this.handleModalClose}
-                                    className="numnums"
-                                >
+                                     <div style={{position: 'relative'}} onClick={() => this.handleModalOpen(n.images)}>
+                                    <img key={n.images[0].image_name} style={{ width: '100%', maxWidth: 400 }}
+                                        src={"https://sukhajata.com/h/img/full/" + n.images[0].image_name}
+                                        alt="Nice to see everyone"
+                                    />
+                                    <Launch 
+                                        style={{color: '#fff', position: 'absolute', bottom: 5, right: 5}}
+                                        onClick={() => this.handleModalOpen(n.images)}
+                                    />
+                                </div>
                                     <div>
                                     <Button 
                                             variant="contained" 

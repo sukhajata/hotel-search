@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'reactn';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -20,8 +20,6 @@ class CustomerDetails extends React.Component {
         }
     
     }
-    
-    
 
     handleInputChange = ({ target }) => {
         this.setState({ [target.name]: target.value });
@@ -37,12 +35,13 @@ class CustomerDetails extends React.Component {
 
     render() {
         const { classes } = this.props;
-        
+        const { language, lanCode } = this.global;
+
         return (
             <div className={classes.container}>
                 <TextField
                     name="firstName"
-                    label="First name / ชื่อ"
+                    label={language.firstName}
                     required
                     style={{ margin: 8 }}
                     fullWidth
@@ -56,7 +55,7 @@ class CustomerDetails extends React.Component {
                 />
                 <TextField
                     name="lastName"
-                    label="Last name / นามสกุล"
+                    label={language.lastName}
                     required
                     style={{ margin: 8 }}
                     fullWidth
@@ -70,7 +69,7 @@ class CustomerDetails extends React.Component {
                 />
                 <TextField
                     name="email"
-                    label="Email / อีเมล"
+                    label={language.email}
                     required
                     style={{ margin: 8 }}
                     fullWidth
@@ -82,10 +81,13 @@ class CustomerDetails extends React.Component {
                         shrink: true,
                     }}
                 />
-                
-                <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                    Continue / ต่อไป
-                </Button>
+                 <div style={{margin: 20, textAlign: 'center'}}>
+                    <div style={{display: 'inline-block'}}>
+                        <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                            {language.continue}
+                        </Button>
+                    </div>
+                </div>
             </div>
         )
     }

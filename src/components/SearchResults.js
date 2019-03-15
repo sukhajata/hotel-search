@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'reactn';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { search } from '../services/api';
 import { getDistance } from '../services/utils';
+import { Hidden } from '@material-ui/core';
 
 const styles = {
   block: {
@@ -39,36 +40,59 @@ class SearchResults extends React.Component {
   render() {
     const { classes } = this.props;
     const { hotels } = this.state;
-    
+    const { lanCode, language } = this.global;
+
     return (
         <div style={{backgroundColor: '#f2f2f2'}}>
           {hotels.map(h => (
             <Paper key={h.hotel_id} className={classes.block} onClick={() => this.handleClick(h.hotel_id)}>
-              <Grid container direction="column"  spacing={8}>
-                {h.image_name && 
-                <Grid item>
-                  <img style={{width: '100%'}}
-                    src={"https://sukhajata.com/h/img/wide/" + h.image_name}
-                    alt="Nice to see everyone"
-                  />
+              <Hidden xsDown implementation="css">
+                <Grid container  spacing={8}>
+                  {h.image_name && 
+                  <Grid item>
+                    <img style={{width: '100%', maxWidth: 400}}
+                      src={"https://sukhajata.com/h/img/wide/" + h.image_name}
+                      alt="Nice to see everyone"
+                    />
+                  </Grid>
+                  }
+                  <Grid item>
+                    <Typography variant="body2" style={{ paddingTop: 15, paddingLeft: 15 }}>
+                        {lanCode === 'th' ? h.hotel_name_thai : h.hotel_name_english}
+                    </Typography>
+                    <Typography variant="body2" style={{paddingLeft: 15}}>
+                      {getDistance(parseFloat(h.latitude), parseFloat(h.longitude))}{language.fromKhemmarat}
+                    </Typography>
+                    <Typography variant="h6" style={{ padding: 15 }}>
+                      {h.min_price}฿
+                    </Typography>
+                  </Grid>
                 </Grid>
-                }
-                <Grid item>
-                  <Typography variant="body2" style={{ paddingTop: 15, paddingLeft: 15 }}>
-                      {h.hotel_name_english}
-                  </Typography>
-                  <Typography variant="body2" style={{ paddingLeft: 15 }}>
-                    {h.hotel_name_thai}
-                  </Typography>
-                  <Typography variant="body2" style={{paddingLeft: 15}}>
-                    {getDistance(parseFloat(h.latitude), parseFloat(h.longitude))}km from Khemmarat
-                  </Typography>
-                  <Typography variant="h6" style={{ padding: 15 }}>
-                    {h.min_price}฿
-                  </Typography>
-                </Grid>
-              
-              </Grid>
+              </Hidden>
+              <Hidden smUp implementation="css">
+                <Grid container  spacing={8}> 
+                    {h.image_name && 
+                    <Grid item>
+                      <img style={{width: '100%'}}
+                        src={"https://sukhajata.com/h/img/wide/" + h.image_name}
+                        alt="Nice to see everyone"
+                      />
+                    </Grid>
+                    }
+                    <Grid item>
+                      <Typography variant="body2" style={{ paddingTop: 15, paddingLeft: 15 }}>
+                        {lanCode === 'th' ? h.hotel_name_thai : h.hotel_name_english}
+                      </Typography>
+                      <Typography variant="body2" style={{paddingLeft: 15}}>
+                        {getDistance(parseFloat(h.latitude), parseFloat(h.longitude))}
+                        {language.fromKhemmarat}
+                      </Typography>
+                      <Typography variant="h6" style={{ padding: 15 }}>
+                        {h.min_price}฿
+                      </Typography>
+                    </Grid>
+                  </Grid>
+              </Hidden>
             </Paper>       
           ))}
       </div>

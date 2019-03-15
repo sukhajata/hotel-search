@@ -1,4 +1,12 @@
 
+import english from './en.translations';
+import thai from './th.translations';
+
+export function getLanguage(code) {
+    const language = code === 'th' ? thai : english;
+    return language;
+}
+
 export async function getHotels() {
     const result = await get("https://sukhajata.com/h/hotel/select.php");
     return result;

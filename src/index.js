@@ -1,8 +1,21 @@
-import React from 'react';
+//import React from 'react';
+import React, { setGlobal } from 'reactn';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { getLanguage } from './services/api';
+
+if (localStorage.getItem('lan') === undefined || localStorage.getItem('lan') === '') {
+    localStorage.setItem('lan', 'th');
+}
+
+const lan = localStorage.getItem('lan');
+
+setGlobal({
+    language: getLanguage(lan),
+    lanCode: lan,
+});
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

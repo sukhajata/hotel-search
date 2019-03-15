@@ -1,13 +1,17 @@
-import React from 'react';
+import React from 'reactn';
 
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 import { withStyles } from '@material-ui/core/styles';
 import styles from '../styles';
 
+import Languages from './Languages';
+
 import { withRouter } from 'react-router-dom'
+
 
 class SearchPage extends React.Component {
 
@@ -56,6 +60,7 @@ class SearchPage extends React.Component {
     render() {
         const { classes } = this.props;
         const { arrive, depart } = this.state;
+        const { language } = this.global;
 
         const SubmitButton = withRouter(({ history }) => (
             <Button
@@ -63,17 +68,21 @@ class SearchPage extends React.Component {
               variant="contained"
               color="primary"
             >
-              Go!
+              {language.go}
             </Button>
           ));
         
         return (
             <div className={classes.searchPage}>
+                <Languages />
                 <Paper className={classes.searchForm}>
+                    <Typography variant="h5" style={{marginBottom: 20}}>
+                        {language.title}
+                    </Typography>
                     <form  noValidate>
                         <TextField
                             id="arrive"
-                            label="Arrive / มาถึง"
+                            label={language.arrive}
                             type="date"
                             fullWidth
                             value={this.state.arrive}
@@ -85,7 +94,7 @@ class SearchPage extends React.Component {
                         />
                          <TextField
                             id="depart"
-                            label="Depart / ออก"
+                            label={language.depart}
                             fullWidth
                             type="date"
                             value={this.state.depart}
