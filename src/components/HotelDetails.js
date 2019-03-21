@@ -2,11 +2,11 @@ import React from 'reactn';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Hidden } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import Launch from '@material-ui/icons/Launch';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import SwipeableViews from 'react-swipeable-views';
 
@@ -75,6 +75,7 @@ class HotelDetails extends React.Component {
 
         return (
             <div  >
+                <CssBaseline />
                 <Lightbox 
                     images={lightboxImages} 
                     open={popperOpen}
@@ -128,36 +129,67 @@ class HotelDetails extends React.Component {
                 <div style={{backgroundColor: '#f2f2f2', paddingTop: 5}}>
                 {rooms.map(n => 
                     <Paper style={{ margin: 15 }} key={n.id} >
-                        <Grid container spacing={8} onClick={() => this.handleClick(n.room_id)}>
-                            <Grid item>
-                                <SwipeableViews >
-                                {n.images.length > 0 &&
-                                    n.images.map(image =>
-                                        <img key={image.image_name} style={{ width: '100%', maxWidth: 400 }}
-                                            src={"https://sukhajata.com/h/img/full/" + image.image_name}
-                                            alt="Nice to see everyone"
-                                        />
-                                    )
-                                }
-                                </SwipeableViews>
-                            </Grid>
+                        <Hidden smUp implementation="css">
+                            <Grid container spacing={8} onClick={() => this.handleClick(n.room_id)}>
+                                <Grid item>
+                                    <SwipeableViews >
+                                    {n.images.length > 0 &&
+                                        n.images.map(image =>
+                                            <img key={image.image_name} style={{ width: '100%', maxWidth: 400 }}
+                                                src={"https://sukhajata.com/h/img/full/" + image.image_name}
+                                                alt="Nice to see everyone"
+                                            />
+                                        )
+                                    }
+                                    </SwipeableViews>
+                                </Grid>
 
-                            <Grid item style={{padding: 15}}>
-                                <Typography variant="body1" >
-                                    {lanCode === 'th' ? n.name_thai : n.name_english}
-                                </Typography>
-                                <Typography variant="h6" style={{ paddingBottom: 15}}>
-                                    {n.price}฿
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => this.selectRoom(n.id)}
-                                >
-                                    {language.select}
-                                </Button>
+                                <Grid item style={{padding: 15}}>
+                                    <Typography variant="body1" >
+                                        {lanCode === 'th' ? n.name_thai : n.name_english}
+                                    </Typography>
+                                    <Typography variant="h6" style={{ paddingBottom: 15}}>
+                                        {n.price}฿
+                                    </Typography>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => this.selectRoom(n.id)}
+                                    >
+                                        {language.select}
+                                    </Button>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Hidden>
+                        <Hidden xsDown implementation="css">
+                            <Grid container spacing={8} onClick={() => this.handleClick(n.room_id)}>
+                                <Grid item>
+                                    {n.images.length > 0 &&
+                                        <img key={n.images[0].image_name} style={{ maxWidth: 300 }}
+                                            src={"https://sukhajata.com/h/img/full/" + n.images[0].image_name}
+                                            alt={n.images[0].image_name}
+                                            onClick={() => this.handleModalOpen(n.images)}
+                                        />
+                                    }
+                                </Grid>
+
+                                <Grid item style={{padding: 15}}>
+                                    <Typography variant="body1" >
+                                        {lanCode === 'th' ? n.name_thai : n.name_english}
+                                    </Typography>
+                                    <Typography variant="h6" style={{ paddingBottom: 15}}>
+                                        {n.price}฿
+                                    </Typography>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => this.selectRoom(n.id)}
+                                    >
+                                        {language.select}
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Hidden>
                     </Paper>
                 )}
                 </div>

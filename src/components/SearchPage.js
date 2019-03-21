@@ -12,12 +12,13 @@ import Languages from './Languages';
 
 import { withRouter } from 'react-router-dom'
 
+import { getNextDay, getToday } from '../services/dates';
 
 class SearchPage extends React.Component {
 
     state ={
-        arrive: this.getToday(),
-        depart: this.getNextDay(new Date()),
+        arrive: getToday(),
+        depart: getNextDay(new Date()),
     }
 
     handleChange = name => event => {
@@ -39,23 +40,7 @@ class SearchPage extends React.Component {
     }
 
 
-    getDate(dd) {
-        const year = dd.getFullYear();
-        const month = dd.getMonth() + 1;
-        const day = dd.getDate();
-        return year + '-' + (month.toString().length === 1 ? '0' + month.toString() : month.toString()) + '-' + (day.toString().length === 1 ? '0' + day.toString() : day.toString());
-    }
 
-    getToday() {
-        const dd = new Date();
-        return this.getDate(dd);
-    }
-
-    getNextDay(date) {
-        const ms = date.getTime() + (1000*60*60*24);
-        const dd = new Date(ms);
-        return this.getDate(dd);
-    }
 
     render() {
         const { classes } = this.props;

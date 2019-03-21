@@ -1,11 +1,9 @@
 import React from 'reactn';
 
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
@@ -22,7 +20,7 @@ class SideNav extends React.Component {
     }
 
     render() {
-        const { classes, sideOpen, toggleDrawer } = this.props;
+        const { classes, sideOpen } = this.props;
         const { language } = this.global;
 
         const side = (
@@ -46,12 +44,7 @@ class SideNav extends React.Component {
                                 <ListItemText primary={language.listHotels}/> 
                             </Link>
                         </ListItem>
-                        <Divider/>
-                        <ListItem button className={classes.listMenuItem} onClick={this.handleClick}>
-                            <Link className={classes.listLink} to="/add-hotel/">
-                                <ListItemText primary={language.addHotel}/>
-                            </Link>
-                        </ListItem>
+                       
                     </List>
                 </div>
             </div>
@@ -92,6 +85,12 @@ class SideNav extends React.Component {
 
 export default withStyles(styles)(SideNav);
 /*
+ <Divider/>
+                        <ListItem button className={classes.listMenuItem} onClick={this.handleClick}>
+                            <Link className={classes.listLink} to="/add-hotel/">
+                                <ListItemText primary={language.addHotel}/>
+                            </Link>
+                        </ListItem>
 <Grid container className={classes.header}>
                     <Grid item>
                         <Typography  component="h1" variant="h6" className={classes.headerText}>

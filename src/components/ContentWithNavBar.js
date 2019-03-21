@@ -28,15 +28,9 @@ class ContentWithNavBar extends React.Component {
     }
 
     render() {
-        const { children, classes, location } = this.props;
+        const { children, classes } = this.props;
         const { sideOpen } = this.state;
 
-        let showSearchBox = false;
-        if (location.pathname.indexOf('phrase-book') > 0 || 
-            location.pathname.indexOf('search') > 0 ||
-            location.pathname.indexOf('songs') > 0) {
-            showSearchBox = true;
-        }
         return (
             <React.Fragment>
                 <CssBaseline />
@@ -47,7 +41,6 @@ class ContentWithNavBar extends React.Component {
                 />
                 <NavBar 
                     toggleDrawer={this.toggleDrawer}
-                    showSearchBox={showSearchBox}
                     title={this.props.title}
                 />
                 <div className={classes.content}>
